@@ -57,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 15
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -110,18 +110,18 @@ TextureImporter:
       name: eagle-attack_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 0
-        width: 36
-        height: 41
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        x: 3
+        y: 2
+        width: 32
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 88b9be94882002f499b1d076e52803fe
+      spriteID: 29728b54914e6194cbf79644d07d2579
       internalID: 4519916460551845219
       vertices: []
       indices: 
@@ -131,18 +131,18 @@ TextureImporter:
       name: eagle-attack_1
       rect:
         serializedVersion: 2
-        x: 42
-        y: 0
-        width: 36
-        height: 41
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        x: 43
+        y: 3
+        width: 35
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6e150f0a16c4ad04da6de301f11a91c7
+      spriteID: be814048eb9ff874b944531b499e368f
       internalID: 6048179551794652959
       vertices: []
       indices: 
@@ -153,17 +153,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 82
-        y: 0
-        width: 36
-        height: 41
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        y: 2
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2c3954294f5909f48bed0119ecd4df69
+      spriteID: 8123358046c8c6e4798dbf475b3dd720
       internalID: 935960722772261620
       vertices: []
       indices: 
@@ -174,17 +174,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 122
-        y: 0
-        width: 36
-        height: 41
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        y: 2
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df6091fa9d7f39c49a8c71697b8dcc5f
+      spriteID: 9bc214dd23552f14f9a3e4c8db7e5f89
       internalID: 2646485277566151736
       vertices: []
       indices: 
