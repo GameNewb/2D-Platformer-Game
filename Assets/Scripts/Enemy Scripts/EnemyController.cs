@@ -9,52 +9,57 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
     [SerializeField] public GameObject chaseObject;
     [SerializeField] private GameObject enemyObject;
-    [SerializeField] private float minChaseDistance = 5f;
-    [SerializeField] private float maxChaseDistance = 10f;
     [SerializeField] public float idleTimer;
+    [SerializeField] public bool facingRight = false;
+    [SerializeField] public bool idleOnly = false;
+    [SerializeField] public bool patrolOnly = false;
 
-    Animator animator;
+    public Animator animator;
 
     private IEnemyState currentState;
-
     private Rigidbody2D enemyRigidBody;
-
-    bool facingRight;
+    
     
     private void Awake()
     {
         enemyRigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        facingRight = true;
+        chaseObject = null;
 
-        ChangeState(new IdleState());
+        if (patrolOnly)
+        {
+            ChangeState(new PatrolState());
+        } 
+        else
+        {
+            ChangeState(new IdleState()); 
+        }
+        
         // GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>()
     }
 
     public void Move()
     {
         //animator.SetFloat("Speed", moveSpeed);
-
-        transform.Translate(GetDirection() * (moveSpeed * Time.fixedDeltaTime));
-
-        /*
-        if (enemyObject.name == "Opossum")
+        if (enemyObject.name == "Opossum" || enemyObject.name == "Frog Master")
         {
+            // Increase speed towards player
             if (chaseObject != null)
             {
-                Chase();
+                transform.Translate(GetDirection() * (moveSpeed * Time.fixedDeltaTime * 2.5f));
             }
             else
             {
-                Patrol(moveSpeed);
+                // Move only
+                transform.Translate(GetDirection() * (moveSpeed * Time.fixedDeltaTime));
             }
-        }*/
+            
+        }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         currentState.Execute();
-        //Move();
     }
 
     public void ChangeState(IEnemyState newState)
@@ -65,40 +70,12 @@ public class EnemyController : MonoBehaviour
             currentState.Exit();
         }
 
-        currentState = newState;
-        currentState.Enter(this);
-    }
-
-    private void Patrol(float move)
-    {
-        // X movement 
-        if (IsFacingRight())
+        // Only enter new state when it's different from previous state, prevent multiple calls of the same function
+        if (currentState != newState)
         {
-            enemyRigidBody.velocity = new Vector2(moveSpeed, 0f);
+            currentState = newState;
+            currentState.Enter(this);
         }
-        else
-        {
-            enemyRigidBody.velocity = new Vector2(-moveSpeed, 0f);
-        }
-    }
-
-    private void Chase()
-    {
-        var targetPositionDefault = new Vector2(chaseObject.transform.position.x, 0f);
-
-        // If target is close, chase
-        if (Vector2.Distance(transform.position, chaseObject.transform.position) <= minChaseDistance)
-        {
-            var targetPosition = new Vector2(Mathf.Sign(chaseObject.transform.position.x), transform.position.y);
-            
-            // Chase object
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime);
-        }
-        else
-        {
-            Patrol(moveSpeed);
-        }
-       
     }
 
     public bool IsFacingRight()

@@ -30,11 +30,24 @@ public class PatrolState : IEnemyState
     
     private void Patrol()
     {
-        patrolTimer += Time.fixedDeltaTime;
+        enemyObject.animator.SetBool("IsMoving", true);
+        enemyObject.animator.SetFloat("Speed", 2f);
 
-        if (patrolTimer >= patrolDuration)
+        // Patrol only enemies don't need to change states
+        if (enemyObject.patrolOnly)
         {
-            enemyObject.ChangeState(new IdleState());
+            enemyObject.ChangeState(new PatrolState());
         }
+        else
+        {
+            patrolTimer += Time.fixedDeltaTime;
+
+            if (patrolTimer >= patrolDuration)
+            {
+                enemyObject.ChangeState(new IdleState());
+            }
+        }
+            
+        
     }
 }

@@ -28,15 +28,23 @@ public class IdleState : IEnemyState
 
     private void Idle()
     {
-        //Debug.Log(enemy.animator);
-        //enemy.animator.SetBool("IsMoving", true);
-        //enemy.animator.SetFloat("Speed", 0);
-
-        idleTimer += Time.fixedDeltaTime;
-
-        if (idleTimer >= idleDuration)
+        enemyObject.animator.SetBool("IsMoving", false);
+        enemyObject.animator.SetFloat("Speed", 0);
+        if (enemyObject.idleOnly)
         {
-            enemyObject.ChangeState(new PatrolState());
+            enemyObject.ChangeState(new IdleState());
         }
+        else if (!enemyObject.patrolOnly)
+        {
+            idleTimer += Time.fixedDeltaTime;
+
+            if (idleTimer >= idleDuration)
+            {
+                enemyObject.animator.SetBool("IsMoving", true);
+                enemyObject.animator.SetFloat("Speed", 1f);
+                enemyObject.ChangeState(new PatrolState());
+            }
+        }
+
     }
 }

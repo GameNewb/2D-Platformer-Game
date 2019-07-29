@@ -17,9 +17,6 @@ public class EnemyVision : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
-        {
-            enemyObject.chaseObject = null;
-        }
+        enemyObject.chaseObject = null;
     }
 }
