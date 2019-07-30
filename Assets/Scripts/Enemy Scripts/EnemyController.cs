@@ -3,23 +3,26 @@ using UnityEngine.Events;
 
 public class EnemyController : MonoBehaviour
 {
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public string stateName;
+
     // Cached components
     [SerializeField] private float moveSpeed = 1f;
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
     [SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
     [SerializeField] public GameObject chaseObject;
-    [SerializeField] private GameObject enemyObject;
-    [SerializeField] public float idleTimer;
-    [SerializeField] public bool facingRight = false;
+    [SerializeField] public float idleTimer = 5f;
+    [SerializeField] public float jumpForce = 200f;
+    [SerializeField] public bool groundEnemy = false;
+    [SerializeField] public bool leapingEnemy = false;
     [SerializeField] public bool idleOnly = false;
     [SerializeField] public bool patrolOnly = false;
-
-    public Animator animator;
+    
 
     private IEnemyState currentState;
     private Rigidbody2D enemyRigidBody;
-    
-    
+    private bool facingRight = false;
+
     private void Awake()
     {
         enemyRigidBody = GetComponent<Rigidbody2D>();
@@ -38,28 +41,19 @@ public class EnemyController : MonoBehaviour
         // GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>()
     }
 
-    public void Move()
-    {
-        //animator.SetFloat("Speed", moveSpeed);
-        if (enemyObject.name == "Opossum" || enemyObject.name == "Frog Master")
-        {
-            // Increase speed towards player
-            if (chaseObject != null)
-            {
-                transform.Translate(GetDirection() * (moveSpeed * Time.fixedDeltaTime * 2.5f));
-            }
-            else
-            {
-                // Move only
-                transform.Translate(GetDirection() * (moveSpeed * Time.fixedDeltaTime));
-            }
-            
-        }
-    }
-
     private void FixedUpdate()
     {
         currentState.Execute();
+
+        if (stateName == "Patrol")
+        {
+            Move();
+        }
+        else
+        {
+            // Reset velocity for idle state
+            enemyRigidBody.velocity = new Vector2(0f, 0f);
+        }
     }
 
     public void ChangeState(IEnemyState newState)
@@ -78,6 +72,43 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+
+    /*** MOVEMENT FUNCTIONS ***/
+    public void Move()
+    {
+        float direction = GetXAxis();
+
+        //animator.SetFloat("Speed", moveSpeed);
+        if (groundEnemy || leapingEnemy)
+        {
+            IncreaseVelocity(direction);
+        }
+    }
+
+    private void IncreaseVelocity(float direction)
+    {
+        // Increase speed towards player
+        if (chaseObject != null)
+        {
+            enemyRigidBody.velocity = new Vector2(direction * (moveSpeed * 2.5f), enemyRigidBody.velocity.y);
+            //transform.Translate(GetDirection() * (moveSpeed * Time.fixedDeltaTime * 2.5f));
+        }
+        else
+        {
+            // Move only
+            enemyRigidBody.velocity = new Vector2(direction * moveSpeed, enemyRigidBody.velocity.y);
+            //transform.Translate(GetDirection() * (moveSpeed * Time.fixedDeltaTime));
+        }
+    }
+
+    public void AddJumpForce()
+    {
+        enemyRigidBody.AddForce(new Vector2(0f, jumpForce));
+    }
+    /*** END MOVEMENT FUNCTIONS ***/
+    
+
+    /*** DIRECTIONAL FUNCTIONS ***/
     public bool IsFacingRight()
     {
         // Positive localScale = true, else false
@@ -89,12 +120,19 @@ public class EnemyController : MonoBehaviour
         facingRight = IsFacingRight();
         return facingRight ? Vector2.right : Vector2.left;
     }
-    
+
+    public float GetXAxis()
+    {
+        facingRight = IsFacingRight();
+        return facingRight ? 1f : -1f;
+    }
+
     // Flip enemy sprite when it reaches the ledge
     public void ChangeDirection()
     {
         facingRight = !facingRight;
         transform.localScale = new Vector2(-(transform.localScale.x), 1f);
     }
-    
+    /*** END DIRECTIONAL FUNCTIONS ***/
+
 }

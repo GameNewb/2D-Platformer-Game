@@ -11,13 +11,14 @@ public class PatrolState : IEnemyState
     public void Enter(EnemyController enemy)
     {
         enemyObject = enemy;
+        enemyObject.stateName = "Patrol";
     }
 
     public void Execute()
     {
         Patrol();
 
-        enemyObject.Move();
+        //enemyObject.Move();
     }
 
     public void Exit()

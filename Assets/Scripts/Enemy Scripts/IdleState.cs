@@ -10,7 +10,8 @@ public class IdleState : IEnemyState
 
     public void Enter(EnemyController enemy)
     {
-        enemyObject = enemy; 
+        enemyObject = enemy;
+        enemyObject.stateName = "Idle";
     }
 
     public void Execute()

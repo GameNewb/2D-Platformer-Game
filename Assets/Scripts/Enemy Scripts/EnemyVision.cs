@@ -15,6 +15,15 @@ public class EnemyVision : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        // Target player
+        if (collision.tag == "Player")
+        {
+            enemyObject.chaseObject = collision.gameObject;
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         enemyObject.chaseObject = null;

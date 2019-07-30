@@ -15,7 +15,7 @@ public class MeleeState : IEnemyState
     public void Exit()
     {
     }
-
+    
     public void OnTriggerEnter(Collider2D other)
     {
     }

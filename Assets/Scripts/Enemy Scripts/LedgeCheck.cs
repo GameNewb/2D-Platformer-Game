@@ -9,7 +9,7 @@ public class LedgeCheck : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Ignore player and keep moving
-        if (collision.tag != "Player" && enemyObject.name != "Frog Master")
+        if (collision.tag != "Player" && !enemyObject.leapingEnemy)
         {
             enemyObject.ChangeDirection();
         }
@@ -18,7 +18,7 @@ public class LedgeCheck : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (enemyObject.name == "Frog Master")
+        if (enemyObject.leapingEnemy)
         {
             enemyObject.ChangeDirection();
         }
