@@ -12,9 +12,10 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
-    [SerializeField] private Collider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
+    [SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
+    [SerializeField] private Vector2 knockback = new Vector2(0.5f, 0.5f);
 
-	const float k_GroundedRadius = .05f; // Radius of the overlap circle to determine if grounded
+    const float k_GroundedRadius = .05f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
@@ -22,6 +23,7 @@ public class CharacterController2D : MonoBehaviour
     private CapsuleCollider2D feetCollider2D;
 	private Vector3 m_Velocity = Vector3.zero;
     private float gravityScaleAtStart;
+    private bool tookDamage = false;
 
     [Header("Events")]
 	[Space]
@@ -78,7 +80,10 @@ public class CharacterController2D : MonoBehaviour
 					OnLandEvent.Invoke();
 			}
 		}
-	}
+
+        TakeDamage();
+ 
+    }
 
 	public void Move(float move, bool crouch, bool jump, bool climb)
 	{
@@ -230,5 +235,21 @@ public class CharacterController2D : MonoBehaviour
         }
     }
 
+    private void TakeDamage()
+    {
+        bool touchingEnemy = bodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy")) || feetCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy"));
+
+        if (touchingEnemy && !tookDamage)
+        {
+            m_Rigidbody2D.velocity = -(knockback);
+
+            if (FindObjectOfType<GameObject>())
+            {
+                FindObjectOfType<GameSession>().ProcessPlayerDeath();
+            }
+
+            tookDamage = true;
+        }
+    }
 
 }
