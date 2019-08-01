@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,14 +18,16 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Vector2 knockback = new Vector2(0.5f, 0.5f);
 
     const float k_GroundedRadius = .05f; // Radius of the overlap circle to determine if grounded
-	private bool m_Grounded;            // Whether or not the player is grounded.
-	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
-	private Rigidbody2D m_Rigidbody2D;
+    const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
+    private bool m_Grounded;            // Whether or not the player is grounded.
+    private Rigidbody2D m_Rigidbody2D;
     private CircleCollider2D bodyCollider2D;
     private CapsuleCollider2D feetCollider2D;
-	private Vector3 m_Velocity = Vector3.zero;
+    private HealthSystem playerHealth;
+    private Vector3 m_Velocity = Vector3.zero;
     private float gravityScaleAtStart;
-    private bool tookDamage = false;
+
+    [HideInInspector] public bool tookDamage = false;
 
     [Header("Events")]
 	[Space]
@@ -41,14 +45,12 @@ public class CharacterController2D : MonoBehaviour
     
     public BoolArrayEvent OnClimbEvent;
 
-    // State
-    bool isAlive = true;
-
     private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
         bodyCollider2D = GetComponent<CircleCollider2D>();
         feetCollider2D = GetComponent<CapsuleCollider2D>();
+        playerHealth = GetComponent<HealthSystem>();
 
         gravityScaleAtStart = m_Rigidbody2D.gravityScale;
 
@@ -81,7 +83,7 @@ public class CharacterController2D : MonoBehaviour
 			}
 		}
 
-        TakeDamage();
+        //TakeDamage();
  
     }
 
@@ -235,11 +237,12 @@ public class CharacterController2D : MonoBehaviour
         }
     }
 
-    private void TakeDamage()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        bool touchingEnemy = bodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy")) || feetCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy"));
+        bool isTouchingEnemy = bodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy")) || feetCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy"));
 
-        if (touchingEnemy && !tookDamage)
+        // 12 - Enemy layer
+        if ((collision.gameObject.layer.Equals(12) || isTouchingEnemy) && playerHealth.currentHealth > 0 && !tookDamage) 
         {
             m_Rigidbody2D.velocity = -(knockback);
 
@@ -247,9 +250,6 @@ public class CharacterController2D : MonoBehaviour
             {
                 FindObjectOfType<GameSession>().ProcessPlayerDeath();
             }
-
-            tookDamage = true;
         }
     }
-
 }

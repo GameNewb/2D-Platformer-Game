@@ -19,35 +19,36 @@ public class HealthSystem : MonoBehaviour
             currentHealth = maxHealth;
         }
 
-        for (int i = 0; i < heartImage.Length; i++)
+        if (heartImage != null)
         {
-            // Display the current health
-            if (i < currentHealth)
+            for (int i = 0; i < heartImage.Length; i++)
             {
-                heartImage[i].sprite = fullHeart;
-            }
-            else
-            {
-                heartImage[i].sprite = emptyHeart;
-            }
-
-            if (i < maxHealth)
-            {
-                // Make heart visible
                 // Only run code when it is set
                 // Prevent MissingReferenceException when player object is destroyed / killed
                 if (heartImage[i] != null)
                 {
-                    heartImage[i].enabled = true;
+                    // Display the current health
+                    if (i < currentHealth)
+                    {
+                        heartImage[i].sprite = fullHeart;
+                    }
+                    else
+                    {
+                        heartImage[i].sprite = emptyHeart;
+                    }
+
+                    if (i < maxHealth)
+                    {
+                        // Make heart visible
+                        heartImage[i].enabled = true;
+                    }
+                    else
+                    {
+                        // Hide heart image
+                        heartImage[i].enabled = false;
+                    }
                 }
-            }
-            else
-            {
-                // Hide heart image
-                if (heartImage[i] != null)
-                {
-                    heartImage[i].enabled = false;
-                }
+                
             }
         }
         

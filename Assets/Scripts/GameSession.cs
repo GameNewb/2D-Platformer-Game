@@ -29,13 +29,16 @@ public class GameSession : MonoBehaviour
 
     public void ProcessPlayerDeath()
     {
-        if (healthSystem.currentHealth > 1)
+        if (healthSystem != null)
         {
-            DealDamage();
-        }
-        else
-        {
-            ResetGameSession();
+            if (healthSystem.currentHealth > 1)
+            {
+                DealDamage();
+            }
+            else
+            {
+                ResetGameSession();
+            }
         }
     }
 
