@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
     [SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
     [SerializeField] public GameObject chaseObject;
+    [SerializeField] public int health = 3;
     [SerializeField] public float idleTimer = 5f;
     [SerializeField] public float jumpForce = 200f;
     [SerializeField] public bool groundEnemy = false;
@@ -43,6 +44,12 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (health < 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         currentState.Execute();
 
         if (stateName == "Patrol")
