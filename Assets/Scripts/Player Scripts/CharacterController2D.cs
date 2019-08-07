@@ -1,31 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class CharacterController2D : MonoBehaviour
 {
     // Cached components
-	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
-	[Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;			// Amount of maxSpeed applied to crouching movement. 1 = 100%
-	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
+	[SerializeField] private float jumpForce;							// Amount of force added when the player jumps.
+	[Range(0, 1)] [SerializeField] private float crouchSpeed = .36f;			// Amount of maxSpeed applied to crouching movement. 1 = 100%
+	[Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the movement
     [SerializeField] private float climbSpeed = 8f;
     [SerializeField] private bool m_AirControl = false;							// Whether or not a player can steer while jumping;
-	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
-	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
-	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
-    [SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
+	[SerializeField] private LayerMask whatIsGround;							// A mask determining what is ground to the character
+	[SerializeField] private Transform groundCheck;							// A position marking where to check if the player is grounded.
+	[SerializeField] private Transform ceilingCheck;							// A position marking where to check for ceilings
+    [SerializeField] private Collider2D crouchDisableCollider;                // A collider that will be disabled when crouching
     [SerializeField] private Vector2 knockback = new Vector2(0.5f, 0.5f);
 
-    const float k_GroundedRadius = .05f; // Radius of the overlap circle to determine if grounded
-    const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
-    private bool m_Grounded;            // Whether or not the player is grounded.
-    private Rigidbody2D m_Rigidbody2D;
+    const float groundedRadius = .05f; // Radius of the overlap circle to determine if grounded
+    const float ceilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
+    private bool grounded;            // Whether or not the player is grounded.
+    private Rigidbody2D rigidBody2D;
     private CircleCollider2D bodyCollider2D;
     private CapsuleCollider2D feetCollider2D;
     private HealthSystem playerHealth;
     private Vector3 m_Velocity = Vector3.zero;
     private float gravityScaleAtStart;
+    private float jumpTimeCounter;
+
+    public float jumpTime;
 
     [HideInInspector] public bool tookDamage = false;
 
@@ -47,12 +48,12 @@ public class CharacterController2D : MonoBehaviour
 
     private void Awake()
 	{
-		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+		rigidBody2D = GetComponent<Rigidbody2D>();
         bodyCollider2D = GetComponent<CircleCollider2D>();
         feetCollider2D = GetComponent<CapsuleCollider2D>();
         playerHealth = GetComponent<HealthSystem>();
 
-        gravityScaleAtStart = m_Rigidbody2D.gravityScale;
+        gravityScaleAtStart = rigidBody2D.gravityScale;
 
         if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
@@ -67,17 +68,17 @@ public class CharacterController2D : MonoBehaviour
 
     private void FixedUpdate()
 	{
-        bool wasGrounded = m_Grounded;
-		m_Grounded = false;
+        bool wasGrounded = grounded;
+		grounded = false;
 
 		// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
 		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
-		Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, groundedRadius, whatIsGround);
 		for (int i = 0; i < colliders.Length; i++)
 		{
 			if (colliders[i].gameObject != gameObject)
 			{
-                m_Grounded = true;
+                grounded = true;
 				if (!wasGrounded)
 					OnLandEvent.Invoke();
 			}
@@ -98,8 +99,8 @@ public class CharacterController2D : MonoBehaviour
             // If player's body is touching any climbing layers
             if (isTouchingLadder)
             {
-                m_Rigidbody2D.gravityScale = 0f;
-                m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
+                rigidBody2D.gravityScale = 0f;
+                rigidBody2D.velocity = new Vector2(rigidBody2D.velocity.x, 0);
 
                 bool isMovingVertically = (Input.GetAxis("Vertical") != 0f);
                 bool onTheGround = feetCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground"));
@@ -109,7 +110,7 @@ public class CharacterController2D : MonoBehaviour
                     // Disable crouching when on the ladder
                     crouch = false;
 
-                    m_Rigidbody2D.velocity = new Vector2(0f, Input.GetAxis("Vertical") * climbSpeed);
+                    rigidBody2D.velocity = new Vector2(0f, Input.GetAxis("Vertical") * climbSpeed);
                     OnClimbEvent.Invoke(true, true);
                 }
                 else if (!onTheGround)
@@ -122,16 +123,16 @@ public class CharacterController2D : MonoBehaviour
                 {
                     // Reset back gravity and add jump velocity
                     // Add jumpforce to Y velocity, but ignore the player Y velocity when going up a ladder
-                    m_Grounded = false;
-                    m_Rigidbody2D.gravityScale = gravityScaleAtStart;
-                    m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce - (climbSpeed * m_Rigidbody2D.velocity.y)));
+                    grounded = false;
+                    rigidBody2D.gravityScale = gravityScaleAtStart;
+                    rigidBody2D.AddForce(new Vector2(0f, jumpForce - (climbSpeed * rigidBody2D.velocity.y)));
                     OnClimbEvent.Invoke(false, onTheGround);
                 }
 
             }
             else
             {
-                m_Rigidbody2D.gravityScale = gravityScaleAtStart;
+                rigidBody2D.gravityScale = gravityScaleAtStart;
                 OnClimbEvent.Invoke(false, false);
             }
 
@@ -141,14 +142,14 @@ public class CharacterController2D : MonoBehaviour
         if (!crouch)
 		{
 			// If the character has a ceiling preventing them from standing up, keep them crouching
-			if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
+			if (Physics2D.OverlapCircle(ceilingCheck.position, ceilingRadius, whatIsGround))
 			{
 				crouch = true;
 			}
 		}
 
 		//only control the player if grounded or airControl is turned on
-		if (m_Grounded || m_AirControl)
+		if (grounded || m_AirControl)
 		{
 			// If crouching
 			if (crouch)
@@ -160,17 +161,17 @@ public class CharacterController2D : MonoBehaviour
 				}
 
 				// Reduce the speed by the crouchSpeed multiplier
-				move *= m_CrouchSpeed;
+				move *= crouchSpeed;
 
 				// Disable one of the colliders when crouching
-				if (m_CrouchDisableCollider != null)
-					m_CrouchDisableCollider.enabled = false;
+				if (crouchDisableCollider != null)
+					crouchDisableCollider.enabled = false;
 			}
             else
 			{
 				// Enable the collider when not crouching
-				if (m_CrouchDisableCollider != null)
-					m_CrouchDisableCollider.enabled = true;
+				if (crouchDisableCollider != null)
+					crouchDisableCollider.enabled = true;
 
 				if (m_wasCrouching)
 				{
@@ -180,22 +181,37 @@ public class CharacterController2D : MonoBehaviour
 			}
 
 			// Move the character by finding the target velocity
-			Vector2 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+			Vector2 targetVelocity = new Vector2(move * 10f, rigidBody2D.velocity.y);
 			// And then smoothing it out and applying it to the character
-			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+			rigidBody2D.velocity = Vector3.SmoothDamp(rigidBody2D.velocity, targetVelocity, ref m_Velocity, movementSmoothing);
 
             FlipSprite(move);
         } 
 
 		// If the player should jump...
-		if (m_Grounded && jump)
+		if (grounded && jump)
 		{
             // Add a vertical force to the player.
             //m_Grounded = false;
-            m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
-        }
+            rigidBody2D.AddForce(new Vector2(0f, jumpForce));
 
-        if (!m_Grounded)
+            /*
+            jumpTimeCounter = jumpTime;
+            rigidBody2D.velocity = Vector2.up * jumpForce;*/
+        }
+        
+        /* Higher jump when Space is held
+        if (Input.GetKey(KeyCode.Space) && !grounded)
+        {
+            if (jumpTimeCounter > 0)
+            {
+                Debug.Log("jumpTimeCounter > 0");
+                rigidBody2D.velocity = Vector2.up * jumpForce;
+                jumpTimeCounter -= Time.deltaTime;
+            }
+        }*/
+
+        if (!grounded)
         {
             isTouchingLadder = bodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Climbing"));
 
@@ -209,7 +225,7 @@ public class CharacterController2D : MonoBehaviour
                     // Stop jumping animation after player latches onto ladder
                     OnLandEvent.Invoke();
 
-                    m_Rigidbody2D.velocity = new Vector2(0f, Input.GetAxis("Vertical") * climbSpeed);
+                    rigidBody2D.velocity = new Vector2(0f, Input.GetAxis("Vertical") * climbSpeed);
                     OnClimbEvent.Invoke(true, true);
                 }
                 else if (!onTheGround)
@@ -244,7 +260,7 @@ public class CharacterController2D : MonoBehaviour
         // 12 - Enemy layer
         if ((collision.gameObject.layer.Equals(12) || isTouchingEnemy) && playerHealth.currentHealth > 0 && !tookDamage) 
         {
-            m_Rigidbody2D.velocity = -(knockback);
+            rigidBody2D.velocity = -(knockback);
 
             if (FindObjectOfType<GameObject>())
             {

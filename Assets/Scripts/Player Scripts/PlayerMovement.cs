@@ -14,9 +14,16 @@ public class PlayerMovement : MonoBehaviour
     bool crouch = false;
     bool climbing = false;
 
+    private float tapSpeed = 0.35f;
+    private float lastTapTime = 0;
+    private bool doubleTap = false;
+    private KeyCode currentKey;
+    private KeyCode previousKey;
+
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+        checkDoubleTap();
+
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
         if (Input.GetButtonDown("Jump"))
@@ -38,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
         {
             climbing = true;
         }
+
+        
     }
 
     public void OnLanding()
@@ -78,5 +87,56 @@ public class PlayerMovement : MonoBehaviour
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump, climbing);
         jump = false;
+    }
+
+    // Function to allow player to dash when keys are simultaneously pressed
+    private void checkDoubleTap()
+    {
+        previousKey = currentKey;
+
+        // Reset double tap when timer resets
+        if ((Time.time - lastTapTime) > tapSpeed)
+        {
+            doubleTap = false;
+        }
+
+        // Check whether left or right keys are being pressed
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            currentKey = KeyCode.RightArrow;
+
+            if ((Time.time - lastTapTime) < tapSpeed)
+            {
+                doubleTap = true;
+            }
+
+            lastTapTime = Time.time;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            currentKey = KeyCode.LeftArrow;
+
+            if ((Time.time - lastTapTime) < tapSpeed)
+            {
+                doubleTap = true;
+            }
+
+            lastTapTime = Time.time;
+        }
+
+        // Reset double tap when player quickly taps left->right or right->left keys
+        if (currentKey != previousKey)
+        {
+            doubleTap = false;
+        }
+
+        // Add basic movement to player X axis
+        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+
+        // Dash towards direction
+        if (doubleTap)
+        {
+            horizontalMove += Input.GetAxis("Horizontal") * (runSpeed / 1.2f);
+        }
     }
 }
