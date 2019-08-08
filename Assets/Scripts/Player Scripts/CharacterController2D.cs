@@ -267,5 +267,6 @@ public class CharacterController2D : MonoBehaviour
                 FindObjectOfType<GameSession>().ProcessPlayerDeath();
             }
         }
+
     }
 }

@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class GameSession : MonoBehaviour
 {
     [SerializeField] HealthSystem healthSystem;
+    [SerializeField] Text gemText;
+    [SerializeField] int gem = 0;
 
     // Singleton Class
     private void Awake()
@@ -25,6 +27,7 @@ public class GameSession : MonoBehaviour
 
     void Start()
     {
+        gemText.text = gem.ToString() + "x";
     }
 
     public void ProcessPlayerDeath()
@@ -40,6 +43,12 @@ public class GameSession : MonoBehaviour
                 ResetGameSession();
             }
         }
+    }
+
+    public void ProcessGold(int pointsToAdd)
+    {
+        gem += pointsToAdd;
+        gemText.text = gem.ToString() + "x";
     }
 
     private void DealDamage()
