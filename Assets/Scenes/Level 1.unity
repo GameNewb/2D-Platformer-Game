@@ -10226,12 +10226,12 @@ PrefabInstance:
     - target: {fileID: 179504690834854801, guid: ed92498bcc2373a45a859c740d310f08,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.94
+      value: -7.3
       objectReference: {fileID: 0}
     - target: {fileID: 179504690834854801, guid: ed92498bcc2373a45a859c740d310f08,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.25
+      value: 1.54
       objectReference: {fileID: 0}
     - target: {fileID: 179504690834854801, guid: ed92498bcc2373a45a859c740d310f08,
         type: 3}
@@ -10560,6 +10560,11 @@ PrefabInstance:
       propertyPath: health
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5173244800170589084, guid: 087071d9558fd0b46b863adf4fddab92,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 087071d9558fd0b46b863adf4fddab92, type: 3}
 --- !u!1001 &8140817549355120085
@@ -10726,22 +10731,22 @@ PrefabInstance:
     - target: {fileID: 8177242901036867142, guid: 81065ce6e029a2646881795fe72aa7ec,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.25
+      value: 1.54
       objectReference: {fileID: 0}
     - target: {fileID: 8177242901036867142, guid: 81065ce6e029a2646881795fe72aa7ec,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -68.56
+      value: -92.8
       objectReference: {fileID: 0}
     - target: {fileID: 8177242899891741892, guid: 81065ce6e029a2646881795fe72aa7ec,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.25
+      value: 1.54
       objectReference: {fileID: 0}
     - target: {fileID: 8177242899891741892, guid: 81065ce6e029a2646881795fe72aa7ec,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -68.56
+      value: -92.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81065ce6e029a2646881795fe72aa7ec, type: 3}

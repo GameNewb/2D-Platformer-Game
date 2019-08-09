@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class EnemyController : MonoBehaviour
@@ -23,6 +25,7 @@ public class EnemyController : MonoBehaviour
     private IEnemyState currentState;
     private Rigidbody2D enemyRigidBody;
     private bool facingRight = false;
+    private bool isDestroyed = false;
 
     private void Awake()
     {
@@ -46,7 +49,7 @@ public class EnemyController : MonoBehaviour
     {
         if (health < 0)
         {
-            Destroy(gameObject);
+            StartCoroutine(PlayDeathAnimation());
             return;
         }
 
@@ -141,5 +144,44 @@ public class EnemyController : MonoBehaviour
         transform.localScale = new Vector2(-(transform.localScale.x), 1f);
     }
     /*** END DIRECTIONAL FUNCTIONS ***/
+
+    // Coroutine to play the death animation of Enemy objects
+    IEnumerator PlayDeathAnimation()
+    {
+        isDestroyed = true;
+
+        // Obtain animator controller to determine the length of death animation
+        RuntimeAnimatorController ac = animator.runtimeAnimatorController;
+        float time = 1f;
+
+        for (int i = 0; i < ac.animationClips.Length; i++)
+        {
+            if (ac.animationClips[i].name == "Enemy Death") //If it has the same name as your clip
+            {
+                time = ac.animationClips[i].length;
+            }
+        }
+
+        // Reset velocity so that the enemy doesn't move during death
+        enemyRigidBody.velocity = new Vector2(0f, 0f);
+
+        // Set appropriate animation
+        animator.SetBool("IsDestroyed", true);
+        animator.SetBool("IsMoving", false);
+        animator.SetFloat("Speed", 0f);
+
+        yield return new WaitForSeconds(time); 
+        Destroy(gameObject);
+    }
+    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Ignore collision
+        if (collision.gameObject.tag == "Player" && isDestroyed)
+        {
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
+        }
+    }
+
 
 }
