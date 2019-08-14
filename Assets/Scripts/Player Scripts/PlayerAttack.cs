@@ -9,26 +9,20 @@ public class PlayerAttack : MonoBehaviour
 
     public Transform attackPosition;
     public LayerMask whatIsEnemy;
+    public Rigidbody2D rigidBody2D;
     public Animator playerAnimator;
     public float attackRange;
     public int damage;
-
-    public GameObject animationObject;
-    GameObject tempObject;
-
+    
     private void Update()
     {
         if (timeBetweenAttacks <= 0)
         {
-            // Destroy attack object after animation
-            if (tempObject != null)
-            {
-                Destroy(tempObject);
-            }
+            playerAnimator.SetBool("IsAttacking", false);
 
             if (Input.GetKey(KeyCode.X)) {
-                tempObject = Instantiate(animationObject, attackPosition.position, transform.rotation);
-                tempObject.SetActive(true);
+                
+                playerAnimator.SetBool("IsAttacking", true);
 
                 Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPosition.position, attackRange, whatIsEnemy);
 
@@ -39,10 +33,10 @@ public class PlayerAttack : MonoBehaviour
                         enemiesToDamage[i].GetComponent<EnemyController>().health -= damage;
                     }
                 }
+
                 timeBetweenAttacks = startTimeBetweenAttacks;
-  
             }
-            
+
         } 
         else
         {

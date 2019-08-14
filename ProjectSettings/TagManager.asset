@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ledge
   - Ground
+  - GroundedObject
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Enemy
   - Hazards
   - Interactables
-  - 
+  - Movables
   - 
   - 
   - 
@@ -55,12 +56,15 @@ TagManager:
   - name: Hazards
     uniqueID: 3111167855
     locked: 0
-  - name: Player
-    uniqueID: 1443676289
-    locked: 0
   - name: Foreground
     uniqueID: 3010499065
     locked: 0
+  - name: Movables
+    uniqueID: 3347398147
+    locked: 0
   - name: Interactables
     uniqueID: 1591337291
+    locked: 0
+  - name: Player
+    uniqueID: 1443676289
     locked: 0

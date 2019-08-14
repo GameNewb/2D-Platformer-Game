@@ -30,7 +30,6 @@ public class MoveInteractables : MonoBehaviour
         // If player is hitting the box and key is being pressed 
         if (hit.collider != null && Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("Dragging");
             interactableObject = hit.collider.gameObject;
 
             interactableObject.GetComponent<FixedJoint2D>().enabled = true;

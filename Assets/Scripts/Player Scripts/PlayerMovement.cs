@@ -97,6 +97,8 @@ public class PlayerMovement : MonoBehaviour
         // Reset double tap when timer resets
         if ((Time.time - lastTapTime) > tapSpeed)
         {
+            animator.SetBool("Idle", true);
+            animator.SetBool("IsDashing", false);
             doubleTap = false;
         }
 
@@ -107,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
 
             if ((Time.time - lastTapTime) < tapSpeed)
             {
+                animator.SetBool("IsDashing", true);
                 doubleTap = true;
             }
 
@@ -118,6 +121,8 @@ public class PlayerMovement : MonoBehaviour
 
             if ((Time.time - lastTapTime) < tapSpeed)
             {
+
+                animator.SetBool("IsDashing", true);
                 doubleTap = true;
             }
 
@@ -127,6 +132,7 @@ public class PlayerMovement : MonoBehaviour
         // Reset double tap when player quickly taps left->right or right->left keys
         if (currentKey != previousKey)
         {
+            animator.SetBool("IsDashing", false);
             doubleTap = false;
         }
 

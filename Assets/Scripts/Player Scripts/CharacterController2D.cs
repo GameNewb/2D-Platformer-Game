@@ -15,7 +15,7 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Collider2D crouchDisableCollider;                // A collider that will be disabled when crouching
     [SerializeField] private Vector2 knockback = new Vector2(0.5f, 0.5f);
 
-    const float groundedRadius = .05f; // Radius of the overlap circle to determine if grounded
+    const float groundedRadius = .15f; // Radius of the overlap circle to determine if grounded
     const float ceilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
     private bool grounded;            // Whether or not the player is grounded.
     private Rigidbody2D rigidBody2D;
@@ -83,9 +83,6 @@ public class CharacterController2D : MonoBehaviour
 					OnLandEvent.Invoke();
 			}
 		}
-
-        //TakeDamage();
- 
     }
 
 	public void Move(float move, bool crouch, bool jump, bool climb)
@@ -192,7 +189,7 @@ public class CharacterController2D : MonoBehaviour
 		if (grounded && jump)
 		{
             // Add a vertical force to the player.
-            //m_Grounded = false;
+            //grounded = false;
             rigidBody2D.AddForce(new Vector2(0f, jumpForce));
 
             /*
@@ -266,8 +263,6 @@ public class CharacterController2D : MonoBehaviour
             {
                 FindObjectOfType<GameSession>().ProcessPlayerDeath();
             }
-
-   
         }
 
     }
