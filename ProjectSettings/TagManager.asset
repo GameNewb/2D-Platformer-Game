@@ -24,8 +24,8 @@ TagManager:
   - Hazards
   - Interactables
   - Movables
-  - 
-  - 
+  - Wooden Blocks - Back
+  - Wooden Blocks - Front
   - 
   - 
   - 
@@ -50,14 +50,20 @@ TagManager:
   - name: Climbing
     uniqueID: 3122320047
     locked: 0
-  - name: Enemy
-    uniqueID: 613895909
-    locked: 0
   - name: Hazards
     uniqueID: 3111167855
     locked: 0
+  - name: Wooden Blocks - Back
+    uniqueID: 2045841991
+    locked: 0
+  - name: Wooden Blocks - Front
+    uniqueID: 2262836683
+    locked: 0
   - name: Foreground
     uniqueID: 3010499065
+    locked: 0
+  - name: Enemy
+    uniqueID: 613895909
     locked: 0
   - name: Movables
     uniqueID: 3347398147
