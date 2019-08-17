@@ -11,12 +11,6 @@ public class MoveInteractables : MonoBehaviour
 
     GameObject interactableObject;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
