@@ -28,7 +28,7 @@ TagManager:
   - Wooden Blocks - Back
   - Wooden Blocks - Front
   - Dummy Targets
-  - 
+  - Collectibles
   - 
   - 
   - 
@@ -71,6 +71,9 @@ TagManager:
     locked: 0
   - name: Interactables
     uniqueID: 1591337291
+    locked: 0
+  - name: Collectibles
+    uniqueID: 3629603141
     locked: 0
   - name: Player
     uniqueID: 1443676289

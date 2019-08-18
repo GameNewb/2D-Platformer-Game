@@ -7,7 +7,6 @@ public class PlayerAttack : MonoBehaviour
     private float animatorTime;
     private float timeBetweenAttacks;
     private string enemyTag;
-    private bool isAttacking = false;
     public float startTimeBetweenAttacks;
 
     public Transform attackPosition;
@@ -19,16 +18,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start()
     {
-        // Obtain animator controller to determine the length of an animation
-        RuntimeAnimatorController ac = playerAnimator.runtimeAnimatorController;
-
-        for (int i = 0; i < ac.animationClips.Length; i++)
-        {
-            if (ac.animationClips[i].name == "Ninja Attack 1") //If it has the same name as your clip
-            {
-                animatorTime = ac.animationClips[i].length;
-            }
-        }
+        animatorTime = GetComponent<AnimationManager>().GetAnimationLength("Ninja Attack 1");
     }
 
     private void FixedUpdate()
@@ -40,7 +30,6 @@ public class PlayerAttack : MonoBehaviour
 
             // X to do Attack 1
             if (Input.GetKeyDown(KeyCode.X)) {
-                isAttacking = true;
                 playerAnimator.SetBool("IsAttacking", true);
                 timeBetweenAttacks = startTimeBetweenAttacks;
 
