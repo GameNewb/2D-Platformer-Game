@@ -31,7 +31,7 @@ public class Interactables : MonoBehaviour
             animator.SetBool("IsDamaged", true);
             StartCoroutine("ChangeAnimation");
             previousHealth = health;
-            textManager.ShowFloatingText(previousHealth.ToString());
+            //textManager.ShowFloatingText(previousHealth.ToString());
         }
     }
 
