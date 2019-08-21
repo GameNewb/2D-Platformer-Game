@@ -23967,36 +23967,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1862431077119842486, guid: ed92498bcc2373a45a859c740d310f08,
-        type: 3}
-      propertyPath: animator
-      value: 
-      objectReference: {fileID: 1935956484}
-    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
-        type: 3}
-      propertyPath: hitEffectPrefab1
-      value: 
-      objectReference: {fileID: 7122983427307229128}
-    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
-        type: 3}
-      propertyPath: hitEffectPrefab2
-      value: 
-      objectReference: {fileID: 1038539321}
-    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
-        type: 3}
-      propertyPath: hitEffectPrefab3
-      value: 
-      objectReference: {fileID: 1118798673}
-    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
-        type: 3}
-      propertyPath: playerAnimator
-      value: 
-      objectReference: {fileID: 1935956484}
-    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
-        type: 3}
-      propertyPath: rigidBody2D
-      value: 
-      objectReference: {fileID: 1935956488}
     - target: {fileID: 179504690834854803, guid: ed92498bcc2373a45a859c740d310f08,
         type: 3}
       propertyPath: m_Name
@@ -24122,6 +24092,36 @@ PrefabInstance:
       propertyPath: m_GravityScale
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1862431077119842486, guid: ed92498bcc2373a45a859c740d310f08,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1935956484}
+    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
+        type: 3}
+      propertyPath: hitEffectPrefab1
+      value: 
+      objectReference: {fileID: 7122983427307229128}
+    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
+        type: 3}
+      propertyPath: hitEffectPrefab2
+      value: 
+      objectReference: {fileID: 1038539321}
+    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
+        type: 3}
+      propertyPath: hitEffectPrefab3
+      value: 
+      objectReference: {fileID: 1118798673}
+    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
+        type: 3}
+      propertyPath: playerAnimator
+      value: 
+      objectReference: {fileID: 1935956484}
+    - target: {fileID: 5219033310021986316, guid: ed92498bcc2373a45a859c740d310f08,
+        type: 3}
+      propertyPath: rigidBody2D
+      value: 
+      objectReference: {fileID: 1935956488}
     - target: {fileID: 1920081001194425556, guid: ed92498bcc2373a45a859c740d310f08,
         type: 3}
       propertyPath: m_JumpForce

@@ -18,7 +18,7 @@ public class PlayerAttack : MonoBehaviour
     [Header("Collider Properties")]
     [Space(2)]
     private Vector3 attackRangeV3;
-    private Vector3 boxColliderPosition;
+    private Vector2 boxColliderPosition;
     private Vector2 boxVector2D;
     public float circleAttackRange;
     public float boxAttackRange;
@@ -35,6 +35,7 @@ public class PlayerAttack : MonoBehaviour
     public GameObject hitEffectPrefab3;
 
     private float parentTransformXScale;
+    private Vector3 circleColliderPosition;
 
     private void Start()
     {
@@ -48,14 +49,7 @@ public class PlayerAttack : MonoBehaviour
         {
             if (timeBetweenAttacks <= 0)
             {
-                // Reset animator bool
-                playerAnimator.SetBool("IsAttacking1", false);
-                playerAnimator.SetBool("IsAttacking2", false);
-                playerAnimator.SetBool("IsAttacking3", false);
-
-                attack1 = false;
-                attack2 = false;
-                attack3 = false;
+                ResetAttackProperties();
 
                 // X to do Attack 1
                 if (Input.GetKeyDown(KeyCode.Z))
@@ -63,7 +57,8 @@ public class PlayerAttack : MonoBehaviour
                     attack1 = true;
                     playerAnimator.SetBool("IsAttacking1", true);
                     timeBetweenAttacks = startTimeBetweenAttacks;
-
+                    
+                    parentTransformXScale = transform.parent.localScale.x;
                     CollideWithObject();
                 }
                 else if (Input.GetKeyDown(KeyCode.X))
@@ -73,8 +68,7 @@ public class PlayerAttack : MonoBehaviour
                     timeBetweenAttacks = startTimeBetweenAttacks;
 
                     // Retrieve parent's X scale
-                    parentTransformXScale = gameObject.GetComponentInParent<Transform>().localScale.x;
-
+                    parentTransformXScale = transform.parent.localScale.x;
                     CollideWithObject();
                 }
                 else if (Input.GetKeyDown(KeyCode.C))
@@ -83,6 +77,8 @@ public class PlayerAttack : MonoBehaviour
                     playerAnimator.SetBool("IsAttacking3", true);
                     timeBetweenAttacks = startTimeBetweenAttacks;
 
+                    // Retrieve parent's X scale
+                    parentTransformXScale = transform.parent.localScale.x;
                     CollideWithObject();
                 }
 
@@ -96,9 +92,7 @@ public class PlayerAttack : MonoBehaviour
         else
         {
             // Reset animator for attacking when player moves immediately after attacking
-            playerAnimator.SetBool("IsAttacking1", false);
-            playerAnimator.SetBool("IsAttacking2", false);
-            playerAnimator.SetBool("IsAttacking3", false);
+            ResetAttackProperties();
         }
         
     }
@@ -111,7 +105,17 @@ public class PlayerAttack : MonoBehaviour
         
         if (attack1)
         {
-            enemiesToDamage = Physics2D.OverlapCircleAll(attackPosition.position, circleAttackRange, whatIsEnemy);
+            if (parentTransformXScale > 0)
+            {
+                boxColliderPosition = new Vector2(transform.parent.position.x + 0.3f, transform.parent.position.y - 0.6f);
+            }
+            else
+            {
+                boxColliderPosition = new Vector2(transform.parent.position.x - 1.45f, transform.parent.position.y - 0.6f);
+            }
+
+            boxVector2D = new Vector2(boxAttackRange + 0.7f, boxAttackRange / 2.5f);
+            enemiesToDamage = Physics2D.OverlapBoxAll(boxColliderPosition, boxVector2D, whatIsEnemy);
         }
         else if (attack2)
         {
@@ -130,7 +134,16 @@ public class PlayerAttack : MonoBehaviour
         } 
         else
         {
-            enemiesToDamage = Physics2D.OverlapCircleAll(attackPosition.position, circleAttackRange, whatIsEnemy);
+            if (parentTransformXScale > 0)
+            {
+                circleColliderPosition = new Vector3(transform.parent.position.x + increaseColliderDistanceX, attackPosition.position.y + 0.32f, 0);
+            }
+            else
+            {
+                circleColliderPosition = new Vector3(transform.parent.position.x - increaseColliderDistanceX, attackPosition.position.y + 0.32f, 0);
+            }
+
+            enemiesToDamage = Physics2D.OverlapCircleAll(circleColliderPosition, circleAttackRange * 1.35f, whatIsEnemy);
         }
 
         for (int i = 0; i < enemiesToDamage.Length; i++)
@@ -159,7 +172,7 @@ public class PlayerAttack : MonoBehaviour
 
         if (attack1)
         {
-            Gizmos.DrawWireSphere(attackPosition.position, circleAttackRange);
+            Gizmos.DrawWireCube(boxColliderPosition, boxVector2D);
         }
         else if (attack2)
         {
@@ -167,7 +180,7 @@ public class PlayerAttack : MonoBehaviour
         }
         else if (attack3)
         {
-            Gizmos.DrawWireSphere(attackPosition.position, circleAttackRange * 1.3f);
+            Gizmos.DrawWireSphere(circleColliderPosition, circleAttackRange * 1.35f);
         }
     }
 
@@ -197,6 +210,18 @@ public class PlayerAttack : MonoBehaviour
                 enemy.GetComponent<HitEffectManager>().ShowHitEffects(hitEffectPrefab3);
             }
         }
+    }
+
+    private void ResetAttackProperties()
+    {
+        attack1 = false;
+        attack2 = false;
+        attack3 = false;
+
+        // Reset animator bool
+        playerAnimator.SetBool("IsAttacking1", attack1);
+        playerAnimator.SetBool("IsAttacking2", attack2);
+        playerAnimator.SetBool("IsAttacking3", attack3);
     }
 
 }
