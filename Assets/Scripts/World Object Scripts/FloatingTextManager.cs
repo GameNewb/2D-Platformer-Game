@@ -22,7 +22,7 @@ public class FloatingTextManager : MonoBehaviour
     private void ShowFloatingText()
     {
         var fText = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity, transform);
-        
+        fText.SetActive(true);
         if (message != null)
         {
             fText.GetComponent<TextMesh>().text = message;
@@ -32,7 +32,7 @@ public class FloatingTextManager : MonoBehaviour
     public void ShowFloatingText(string textToShow)
     {
         var fText = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity, transform);
-
+        fText.SetActive(true);
         if (textToShow != null)
         {
             fText.GetComponent<TextMesh>().text = textToShow;
