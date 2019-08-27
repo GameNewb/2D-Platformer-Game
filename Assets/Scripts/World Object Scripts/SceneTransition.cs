@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneTransition : MonoBehaviour
 {
     [SerializeField] private string nextLevel;
+    public GameObject panelObject;
+    public Animator transitionAnimator;
 
     private Scene currentLevel;
 
@@ -14,8 +17,16 @@ public class SceneTransition : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             currentLevel = SceneManager.GetActiveScene();
-
-            SceneManager.LoadScene(nextLevel);
+            StartCoroutine(LoadScene());
         }
+    }
+
+    IEnumerator LoadScene()
+    {
+        transitionAnimator.SetTrigger("End");
+        yield return new WaitForSeconds(1.2f);
+
+       // panelObject.GetComponent<Image>().enabled = false;
+        SceneManager.LoadScene(nextLevel);
     }
 }

@@ -8,6 +8,9 @@ TagManager:
   - Ground
   - GroundedObject
   - Dummy Targets
+  - Hit Effect 1
+  - Hit Effect 2
+  - Hit Effect 3
   layers:
   - Default
   - TransparentFX

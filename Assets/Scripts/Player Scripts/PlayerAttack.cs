@@ -37,9 +37,15 @@ public class PlayerAttack : MonoBehaviour
     private float parentTransformXScale;
     private Vector3 circleColliderPosition;
 
-    private void Start()
+    private void Awake()
     {
         animatorTime = GetComponent<AnimationManager>().GetAnimationLength("Ninja Attack 1");
+
+        if (!hitEffectPrefab1) {
+            hitEffectPrefab1 = GameObject.FindWithTag("Hit Effect 1");
+        }
+        if (!hitEffectPrefab2) { hitEffectPrefab2 = GameObject.FindWithTag("Hit Effect 2"); }
+        if (!hitEffectPrefab3) { hitEffectPrefab3 = GameObject.FindWithTag("Hit Effect 3"); }
     }
 
     private void Update()
