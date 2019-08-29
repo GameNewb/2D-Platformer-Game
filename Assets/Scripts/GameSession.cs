@@ -54,6 +54,7 @@ public class GameSession : MonoBehaviour
     private void DealDamage()
     {
         healthSystem.currentHealth--;
+        Debug.Log(healthSystem.currentHealth);
     }
 
     private void ResetGameSession()

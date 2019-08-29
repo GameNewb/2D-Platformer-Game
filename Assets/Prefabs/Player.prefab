@@ -309,6 +309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 2102685802135685081}
   animator: {fileID: 2102685802135685074}
+  startingPosition: {fileID: 11400000, guid: 92a791e831f089f44bca146b021595af, type: 2}
   runSpeed: 40
 --- !u!114 &2102685802135685083
 MonoBehaviour:

@@ -259,7 +259,7 @@ public class CharacterController2D : MonoBehaviour
         {
             rigidBody2D.velocity = -(knockback);
 
-            if (FindObjectOfType<GameObject>())
+            if (FindObjectOfType<GameSession>())
             {
                 FindObjectOfType<GameSession>().ProcessPlayerDeath();
             }

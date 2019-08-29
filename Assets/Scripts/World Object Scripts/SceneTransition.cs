@@ -10,12 +10,16 @@ public class SceneTransition : MonoBehaviour
     public GameObject panelObject;
     public Animator transitionAnimator;
 
+    public Vector2 playerPosition;
+    public PlayerPosition playerStorage;
+
     private Scene currentLevel;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
+            playerStorage.initialValue = playerPosition;
             currentLevel = SceneManager.GetActiveScene();
             StartCoroutine(LoadScene());
         }

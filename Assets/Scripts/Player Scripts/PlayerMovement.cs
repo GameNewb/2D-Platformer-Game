@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController2D controller;
     public Animator animator;
+    public PlayerPosition startingPosition;
 
     public float runSpeed = 40f;
 
@@ -19,6 +20,11 @@ public class PlayerMovement : MonoBehaviour
     private bool doubleTap = false;
     private KeyCode currentKey;
     private KeyCode previousKey;
+    /*
+    private void Start()
+    {
+        transform.position = startingPosition.initialValue;
+    }*/
 
     void Update()
     {
