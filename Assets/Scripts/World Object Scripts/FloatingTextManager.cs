@@ -10,14 +10,7 @@ public class FloatingTextManager : MonoBehaviour
     [Space(1)]
     public string message;
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (floatingTextPrefab)
-        {
-            ShowFloatingText();
-        }
-    }
+    private bool interacting = false;
 
     private void ShowFloatingText()
     {
@@ -37,6 +30,23 @@ public class FloatingTextManager : MonoBehaviour
         {
             fText.GetComponent<TextMesh>().text = textToShow;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player" && floatingTextPrefab && !interacting)
+        {
+            StartCoroutine("ResetInteraction");
+            ShowFloatingText();
+        }
+    }
+
+    IEnumerator ResetInteraction()
+    {
+        interacting = true;
+        yield return new WaitForSeconds(5f);
+
+        interacting = false;
     }
 
 }
