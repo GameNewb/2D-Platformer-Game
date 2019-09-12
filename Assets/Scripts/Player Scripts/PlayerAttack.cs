@@ -156,6 +156,12 @@ public class PlayerAttack : MonoBehaviour
                 enemiesToDamage[i].GetComponent<Interactables>().health -= damage;
             }
 
+            // Reduce HP of destructible objects
+            if (enemyTag.Equals("Destructibles"))
+            {
+                enemiesToDamage[i].GetComponent<Destructibles>().health -= damage;
+            }
+
             // Reduce HP of enemy objects
             if (enemiesToDamage[i].GetComponent<EnemyController>() != null)
             {

@@ -11,6 +11,7 @@ TagManager:
   - Hit Effect 1
   - Hit Effect 2
   - Hit Effect 3
+  - Destructibles
   layers:
   - Default
   - TransparentFX
@@ -32,7 +33,7 @@ TagManager:
   - Wooden Blocks - Front
   - Dummy Targets
   - Collectibles
-  - 
+  - Destructibles
   - 
   - 
   - 

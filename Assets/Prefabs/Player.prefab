@@ -423,7 +423,7 @@ MonoBehaviour:
   attackPosition: {fileID: 2102685803042558798}
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 266240
+    m_Bits: 1314816
   rigidBody2D: {fileID: 2102685802135685085}
   playerAnimator: {fileID: 2102685802135685074}
   damage: 1
