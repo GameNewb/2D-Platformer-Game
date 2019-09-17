@@ -253,9 +253,10 @@ public class CharacterController2D : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         bool isTouchingEnemy = bodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy")) || feetCollider2D.IsTouchingLayers(LayerMask.GetMask("Enemy"));
+        bool isTouchingHazards = bodyCollider2D.IsTouchingLayers(LayerMask.GetMask("Hazards"));
 
         // 12 - Enemy layer
-        if ((collision.gameObject.layer.Equals(12) || isTouchingEnemy) && playerHealth.currentHealth > 0 && !tookDamage) 
+        if ((collision.gameObject.layer.Equals(12) || isTouchingEnemy || isTouchingHazards) && playerHealth.currentHealth > 0 && !tookDamage) 
         {
             rigidBody2D.velocity = -(knockback);
 

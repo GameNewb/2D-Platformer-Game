@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FloatingTextManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class FloatingTextManager : MonoBehaviour
         fText.SetActive(true);
         if (message != null)
         {
-            fText.GetComponent<TextMesh>().text = message;
+            fText.GetComponent<TextMeshPro>().text = message;
         }
     }
 
@@ -28,7 +29,7 @@ public class FloatingTextManager : MonoBehaviour
         fText.SetActive(true);
         if (textToShow != null)
         {
-            fText.GetComponent<TextMesh>().text = textToShow;
+            fText.GetComponent<TextMeshPro>().text = textToShow;
         }
     }
 

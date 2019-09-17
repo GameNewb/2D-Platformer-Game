@@ -55,9 +55,6 @@ TagManager:
   - name: Climbing
     uniqueID: 3122320047
     locked: 0
-  - name: Hazards
-    uniqueID: 3111167855
-    locked: 0
   - name: Wooden Blocks - Back
     uniqueID: 2045841991
     locked: 0
@@ -84,4 +81,7 @@ TagManager:
     locked: 0
   - name: Player Attack
     uniqueID: 2841418531
+    locked: 0
+  - name: Hazards
+    uniqueID: 3111167855
     locked: 0
