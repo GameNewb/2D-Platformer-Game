@@ -8,20 +8,16 @@ public class LedgeCheck : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Ignore player and keep moving
-        if (collision.tag != "Player" && !enemyObject.leapingEnemy)
+        // Change direction when player is hit and keep moving
+        if (collision.tag == "Player" && !enemyObject.leapingEnemy)
         {
             enemyObject.ChangeDirection();
         }
-
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (enemyObject.leapingEnemy)
-        {
-            enemyObject.ChangeDirection();
-        }
+        enemyObject.ChangeDirection();
     }
 
 }

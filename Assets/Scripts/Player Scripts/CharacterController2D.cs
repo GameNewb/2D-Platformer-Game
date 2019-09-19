@@ -259,7 +259,7 @@ public class CharacterController2D : MonoBehaviour
         if ((collision.gameObject.layer.Equals(12) || isTouchingEnemy || isTouchingHazards) && playerHealth.currentHealth > 0 && !tookDamage) 
         {
             rigidBody2D.velocity = -(knockback);
-
+            
             if (FindObjectOfType<GameSession>())
             {
                 FindObjectOfType<GameSession>().ProcessPlayerDeath();

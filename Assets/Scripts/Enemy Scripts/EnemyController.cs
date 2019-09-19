@@ -149,6 +149,7 @@ public class EnemyController : MonoBehaviour
     IEnumerator PlayDeathAnimation()
     {
         isDestroyed = true;
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), isDestroyed);
 
         // Obtain animator controller to determine the length of death animation
         RuntimeAnimatorController ac = animator.runtimeAnimatorController;
@@ -173,15 +174,5 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(time); 
         Destroy(gameObject);
     }
-    
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Ignore collision
-        if (collision.gameObject.tag == "Player" && isDestroyed)
-        {
-            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
-        }
-    }
-
-
+  
 }
