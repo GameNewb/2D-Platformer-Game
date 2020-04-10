@@ -29,7 +29,7 @@ public class ScenePersistence : MonoBehaviour
         initialSceneIndex = SceneManager.GetActiveScene().buildIndex;
     }
 
-    /*
+   
     void Update()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -38,6 +38,6 @@ public class ScenePersistence : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }*/
+    }
 
 }

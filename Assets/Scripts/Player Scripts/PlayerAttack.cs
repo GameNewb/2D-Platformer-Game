@@ -107,14 +107,14 @@ public class PlayerAttack : MonoBehaviour
         {
             if (parentTransformXScale > 0)
             {
-                boxColliderPosition = new Vector2(transform.parent.position.x + 0.3f, transform.parent.position.y - 0.6f);
+                boxColliderPosition = new Vector2(transform.parent.position.x + 1.4f, transform.parent.position.y - 0.6f);
             }
             else
             {
-                boxColliderPosition = new Vector2(transform.parent.position.x - 1.45f, transform.parent.position.y - 0.6f);
+                boxColliderPosition = new Vector2(transform.parent.position.x - 1.4f, transform.parent.position.y - 0.6f);
             }
 
-            boxVector2D = new Vector2(boxAttackRange + 0.7f, boxAttackRange / 2.5f);
+            boxVector2D = new Vector2(boxAttackRange + 0.7f, boxAttackRange / 2.2f);
             enemiesToDamage = Physics2D.OverlapBoxAll(boxColliderPosition, boxVector2D, whatIsEnemy);
         }
         else if (attack2)
